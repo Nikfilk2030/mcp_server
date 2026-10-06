@@ -1,0 +1,51 @@
+name: Template checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  starter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.12'
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m ruff check .
+      - run: python -m pytest -m starter
+  container:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.12'
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt
+      - run: docker build -t mcp-workshop .
+      - run: docker run -d --name workshop --read-only --tmpfs /tmp:size=16m --memory=192m --pids-limit=64 --cap-drop=ALL --security-opt=no-new-privileges -p 127.0.0.1:8000:8000 mcp-workshop
+      - run: |
+          python - <<'PY'
+          import time
+          import urllib.request
+          for attempt in range(30):
+              try:
+                  urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=1).close()
+                  break
+              except OSError:
+                  time.sleep(1)
+          else:
+              raise SystemExit('Container did not become ready')
+          PY
+      - run: python -m pytest -m starter
+        env:
+          MCP_TEST_URL: http://127.0.0.1:8000/mcp
+      - run: SITE_HOST=example.org docker compose config --quiet
+      - run: docker run --rm -e SITE_HOST=example.org -v "$PWD/deploy/Caddyfile:/etc/caddy/Caddyfile:ro" caddy:2.10.2-alpine caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+      - if: always()
+        run: docker logs workshop; docker rm -f workshop

@@ -1,0 +1,248 @@
+[
+  {
+    "id": "empty",
+    "arguments": {
+      "text": ""
+    },
+    "expected": {
+      "length": 0,
+      "utf8_bytes": 0,
+      "normalized": "",
+      "characters": []
+    }
+  },
+  {
+    "id": "mixed",
+    "arguments": {
+      "text": "A\u0430"
+    },
+    "expected": {
+      "length": 2,
+      "utf8_bytes": 3,
+      "normalized": "A\u0430",
+      "characters": [
+        {
+          "index": 0,
+          "character": "A",
+          "codepoint": "U+0041",
+          "name": "LATIN CAPITAL LETTER A",
+          "category": "Lu"
+        },
+        {
+          "index": 1,
+          "character": "\u0430",
+          "codepoint": "U+0430",
+          "name": "CYRILLIC SMALL LETTER A",
+          "category": "Ll"
+        }
+      ]
+    }
+  },
+  {
+    "id": "emoji",
+    "arguments": {
+      "text": "\ud83d\udc69\u200d\ud83d\udcbb"
+    },
+    "expected": {
+      "length": 3,
+      "utf8_bytes": 11,
+      "normalized": "\ud83d\udc69\u200d\ud83d\udcbb",
+      "characters": [
+        {
+          "index": 0,
+          "character": "\ud83d\udc69",
+          "codepoint": "U+1F469",
+          "name": "WOMAN",
+          "category": "So"
+        },
+        {
+          "index": 1,
+          "character": "\u200d",
+          "codepoint": "U+200D",
+          "name": "ZERO WIDTH JOINER",
+          "category": "Cf"
+        },
+        {
+          "index": 2,
+          "character": "\ud83d\udcbb",
+          "codepoint": "U+1F4BB",
+          "name": "PERSONAL COMPUTER",
+          "category": "So"
+        }
+      ]
+    }
+  },
+  {
+    "id": "invisible",
+    "arguments": {
+      "text": "A\u200b\u00a0\n"
+    },
+    "expected": {
+      "length": 4,
+      "utf8_bytes": 7,
+      "normalized": "A\u200b\u00a0\n",
+      "characters": [
+        {
+          "index": 0,
+          "character": "A",
+          "codepoint": "U+0041",
+          "name": "LATIN CAPITAL LETTER A",
+          "category": "Lu"
+        },
+        {
+          "index": 1,
+          "character": "\u200b",
+          "codepoint": "U+200B",
+          "name": "ZERO WIDTH SPACE",
+          "category": "Cf"
+        },
+        {
+          "index": 2,
+          "character": "\u00a0",
+          "codepoint": "U+00A0",
+          "name": "NO-BREAK SPACE",
+          "category": "Zs"
+        },
+        {
+          "index": 3,
+          "character": "\n",
+          "codepoint": "U+000A",
+          "name": "UNNAMED",
+          "category": "Cc"
+        }
+      ]
+    }
+  },
+  {
+    "id": "nfc",
+    "arguments": {
+      "text": "e\u0301",
+      "normalization": "NFC"
+    },
+    "expected": {
+      "length": 2,
+      "utf8_bytes": 3,
+      "normalized": "\u00e9",
+      "characters": [
+        {
+          "index": 0,
+          "character": "e",
+          "codepoint": "U+0065",
+          "name": "LATIN SMALL LETTER E",
+          "category": "Ll"
+        },
+        {
+          "index": 1,
+          "character": "\u0301",
+          "codepoint": "U+0301",
+          "name": "COMBINING ACUTE ACCENT",
+          "category": "Mn"
+        }
+      ]
+    }
+  },
+  {
+    "id": "nfd",
+    "arguments": {
+      "text": "\u00e9",
+      "normalization": "NFD"
+    },
+    "expected": {
+      "length": 1,
+      "utf8_bytes": 2,
+      "normalized": "e\u0301",
+      "characters": [
+        {
+          "index": 0,
+          "character": "\u00e9",
+          "codepoint": "U+00E9",
+          "name": "LATIN SMALL LETTER E WITH ACUTE",
+          "category": "Ll"
+        }
+      ]
+    }
+  },
+  {
+    "id": "nfkc",
+    "arguments": {
+      "text": "\uff21\ufb01",
+      "normalization": "NFKC"
+    },
+    "expected": {
+      "length": 2,
+      "utf8_bytes": 6,
+      "normalized": "Afi",
+      "characters": [
+        {
+          "index": 0,
+          "character": "\uff21",
+          "codepoint": "U+FF21",
+          "name": "FULLWIDTH LATIN CAPITAL LETTER A",
+          "category": "Lu"
+        },
+        {
+          "index": 1,
+          "character": "\ufb01",
+          "codepoint": "U+FB01",
+          "name": "LATIN SMALL LIGATURE FI",
+          "category": "Ll"
+        }
+      ]
+    }
+  },
+  {
+    "id": "nfkd",
+    "arguments": {
+      "text": "\u00e9\ufb01",
+      "normalization": "NFKD"
+    },
+    "expected": {
+      "length": 2,
+      "utf8_bytes": 5,
+      "normalized": "e\u0301fi",
+      "characters": [
+        {
+          "index": 0,
+          "character": "\u00e9",
+          "codepoint": "U+00E9",
+          "name": "LATIN SMALL LETTER E WITH ACUTE",
+          "category": "Ll"
+        },
+        {
+          "index": 1,
+          "character": "\ufb01",
+          "codepoint": "U+FB01",
+          "name": "LATIN SMALL LIGATURE FI",
+          "category": "Ll"
+        }
+      ]
+    }
+  },
+  {
+    "id": "nfc-default",
+    "arguments": {
+      "text": "e\u0301"
+    },
+    "expected": {
+      "length": 2,
+      "utf8_bytes": 3,
+      "normalized": "\u00e9",
+      "characters": [
+        {
+          "index": 0,
+          "character": "e",
+          "codepoint": "U+0065",
+          "name": "LATIN SMALL LETTER E",
+          "category": "Ll"
+        },
+        {
+          "index": 1,
+          "character": "\u0301",
+          "codepoint": "U+0301",
+          "name": "COMBINING ACUTE ACCENT",
+          "category": "Mn"
+        }
+      ]
+    }
+  }
+]
