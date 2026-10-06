@@ -1,0 +1,27 @@
+name: Правка задания или ошибка шаблона
+description: Сообщить о неточности, непонятном требовании или проблеме тестов.
+title: "[Задание] "
+body:
+  - type: textarea
+    id: location
+    attributes:
+      label: Где нужна правка
+      description: Файл, раздел, ссылка на строку или название теста.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Что не так
+      description: Ожидаемое и фактическое поведение. Не прикладывайте ключи и токены.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Предлагаемое изменение
+  - type: textarea
+    id: environment
+    attributes:
+      label: Окружение и воспроизведение
+      description: Версия Python, ОС, команда запуска и вывод ошибки, если проблема техническая.
