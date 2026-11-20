@@ -5,13 +5,12 @@ from mcp.server import MCPServer
 from mcp.server.transport_security import TransportSecuritySettings
 from starlette.responses import JSONResponse
 
-from tools import lookup_club_room, ping
+from tools import ping
 
 
 def create_app():
     mcp = MCPServer("Клубное расписание", version="0.1.0")
     mcp.tool()(ping)
-    mcp.tool()(lookup_club_room)
 
     @mcp.custom_route("/healthz", methods=["GET"])
     async def healthz(request):
