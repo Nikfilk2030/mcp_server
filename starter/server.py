@@ -11,6 +11,7 @@ from tools import ping
 def create_app():
     mcp = MCPServer("Клубное расписание", version="0.1.0")
     mcp.tool()(ping)
+    # TODO: Импортируйте функцию поиска из tools.py и зарегистрируйте её здесь
 
     @mcp.custom_route("/healthz", methods=["GET"])
     async def healthz(request):
