@@ -1,0 +1,5 @@
+[
+  {"club_id": "orbit", "name": "Орбита", "day": "вт", "time": "18:30", "room": "Б-204"},
+  {"club_id": "rook", "name": "Ладья", "day": "ср", "time": "17:00", "room": "А-112"},
+  {"club_id": "prism", "name": "Призма", "day": "пт", "time": "16:15", "room": "В-305"}
+]

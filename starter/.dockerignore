@@ -1,0 +1,6 @@
+*
+!Dockerfile
+!server.py
+!tools.py
+!schedule.json
+!requirements.txt
