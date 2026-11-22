@@ -12,5 +12,8 @@ class LookupTests(unittest.TestCase):
             with self.subTest(club_id=club["club_id"]):
                 self.assertEqual(lookup_club_room(club["club_id"]), club["room"])
 
+    def test_lookup_is_case_sensitive(self):
+        self.assertEqual(lookup_club_room("ORBIT"), "Клуб не найден")
+
     def test_unknown_club(self):
         self.assertEqual(lookup_club_room("missing"), "Клуб не найден")
